@@ -12,14 +12,14 @@ public class Main {
 
         for (int i = 0; i < n; i++) {
             String input = br.readLine();
-            StringTokenizer st = new StringTokenizer(input);
+            String[] word = input.split(" ");
 
-            while (st.hasMoreTokens()) {
-                String word = st.nextToken();
-                sb.append(new StringBuilder(word).reverse().append(" "));
+            for (int j = 0; j < word.length; j++) {
+                sb.append(new StringBuilder(word[j]).reverse().toString()).append(" ");
             }
             sb.append("\n");
         }
+
         System.out.println(sb);
     }
 }
