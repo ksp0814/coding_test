@@ -1,45 +1,59 @@
+
 import java.util.Scanner;
+import java.io.FileInputStream;
 
-class Solution {
-    public static void main(String args[]) throws Exception {
-        Scanner sc = new Scanner(System.in);
-        int T = sc.nextInt();
 
-        for (int test_case = 1; test_case <= T; test_case++) {
-            int p = sc.nextInt();
+class Solution
+{
+	public static void main(String args[]) throws Exception
+	{
+
+		Scanner sc = new Scanner(System.in);
+		int T;
+		T=sc.nextInt();
+        
+                int[][] list = new int[300][300];
+        list[0][0] = 1;
+
+        for(int i = 1; i < 300; i++){
+            list[i][0] = list[i-1][0]+i;
+        }
+
+        for(int r= 0; r < 300; r++){
+            for(int c = 1; c < 300; c++){
+                list[r][c] = list[r][c-1] + (r+c+1);
+            }
+        }
+
+		for(int test_case = 1; test_case <= T; test_case++)
+		{
+             int p = sc.nextInt();
             int q = sc.nextInt();
 
-            int[] posP = getCoordinate(p);
-            int[] posQ = getCoordinate(q);
+            int[] p_idx = new int[2];
+            int[] q_idx = new int[2];
 
-            int x = posP[0] + posQ[0];
-            int y = posP[1] + posQ[1];
+            for(int r = 0; r < 300; r++){
+                for(int c = 0; c < 300; c++){
+                    if(list[r][c] == p){
+                        p_idx[0] = r+1;
+                        p_idx[1] = c+1;
+                    }
+                    if(list[r][c] == q){
+                        q_idx[0] = r+1;
+                        q_idx[1] = c+1;
+                    }
+                }
+            }
 
-            int result = getValue(x, y);
-            System.out.printf("#%d %d\n", test_case, result);
-        }
-    }
+            int target_x = p_idx[0]+q_idx[0];
+            int target_y = p_idx[1]+q_idx[1];
 
-    // 좌표에서 숫자로
-    static int getValue(int x, int y) {
-        int sum = x + y - 1;
-        return (sum * (sum - 1)) / 2 + x;
-    }
+            int result = list[target_x-1][target_y-1];
 
-    // 숫자에서 좌표로
-    static int[] getCoordinate(int value) {
-        int sum = 1;
-        int line = 1;
+            System.out.println("#" + test_case + " " + result);
+		
 
-        while (sum < value) {
-            line++;
-            sum += line;
-        }
-
-        int diff = sum - value;
-        int x = line - diff;
-        int y = 1 + diff;
-
-        return new int[]{x, y};
-    }
+		}
+	}
 }
