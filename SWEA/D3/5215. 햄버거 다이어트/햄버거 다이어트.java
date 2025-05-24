@@ -4,6 +4,9 @@ import java.io.FileInputStream;
 
 class Solution
 {
+    static int n,l;
+    static int[][] list;
+   	static int max;
 	public static void main(String args[]) throws Exception
 	{
 
@@ -13,34 +16,33 @@ class Solution
 
 		for(int test_case = 1; test_case <= T; test_case++)
 		{
-			int N = sc.nextInt();
-            int L = sc.nextInt();
+			n = sc.nextInt();
+            l = sc.nextInt();
             
-            int[][] list  = new int[N][2];
+            list = new int[n][2];
             
-            for (int i =0; i< N; i++) {
-            	list[i][0] = sc.nextInt();
-                list[i][1] = sc.nextInt();
+            for (int i =0; i < n; i++) {
+            	list[i][0] = sc.nextInt(); // 점수
+                list[i][1] = sc.nextInt(); // 칼로리
             }
             
-            int[][] dp = new int[N+1][L+1];
+            max = 0;
+            check(0,0,0);
             
-            for(int i =1; i<=N; i++) {
-                int score = list[i-1][0];
-                int calorie = list[i-1][1]; 
-            	for(int j =0; j <=L; j++) {
-                	if( j >= calorie) {
-                    	dp[i][j] = Math.max(dp[i-1][j], dp[i-1][j-calorie] + score);
-                    } else {
-                    	dp[i][j] = dp[i-1][j];
-                    }
-                }
-            }
+            System.out.println("#" + test_case + " " + max);
             
-            System.out.println("#" + test_case + " " + dp[N][L]);
-            
-            
-			
 		}
 	}
-}
+    
+    static void check(int start, int sum, int cal) {
+        if ( cal > l) return;
+    	if(start == n) {
+        	max = Math.max(max,sum);
+            return;
+        }
+        	check(start+1, sum+ list[start][0], cal + list[start][1]); // 선택한거 
+            
+            check(start +1, sum, cal); // 선택안한거
+        	
+        }
+    }
