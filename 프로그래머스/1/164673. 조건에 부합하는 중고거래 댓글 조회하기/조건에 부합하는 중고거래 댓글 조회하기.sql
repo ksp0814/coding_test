@@ -1,0 +1,2 @@
+SELECT a.TITLE, b.BOARD_ID, b.REPLY_ID, b.WRITER_ID, b.CONTENTS,date_format(b.CREATED_DATE, "%Y-%m-%d") as CREATED_DATE FROM USED_GOODS_BOARD a join used_goods_reply b on a.board_id = b.board_id where a.created_date between date '2022-10-01' and date '2022-10-31'
+order by b.created_date ASC , a.title ASC;
