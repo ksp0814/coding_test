@@ -1,19 +1,36 @@
 class Solution {
     public int solution(int n, int w, int num) {
-        int answer = 0;
+        int answer = 1;
         
-        int level = (num-1) / w;
-
-        int ori_level = level % 2;
-
-        int tmp = (num + (w - 1)) - ((num + (w - 1)) % w);
-        int gap = (tmp - num) * 2 + 1;
-
-        for (; num <= n; level++, answer++){
-            if (level % 2 == ori_level) num += gap;
-            else num += (w * 2) - gap;
+        int[] list = new int[w];
+            
+        for(int i = 0; i < w; i++) {
+            list[i] = 1 + (2*i);
         }
-
+        
+        int floor = (num - 1) / w; // 현재 몇 층에 있는지
+        int row;
+        
+        while(num < n) {
+            if(floor % 2 == 0) { // 현재 층수가 짝수일경우 
+                row = w -1 - ((num -1) % w);
+                if(num + list[row] <= n){
+                    num += list[row];
+                }else break;
+            } else {
+                row = w - 1 - ((num -1) % w);
+                if(num + list[row] <= n) {
+                    num += list[row];
+                } else break;
+            }
+            floor = (num -1) /w;
+            answer++;
+            
+            if(num >= n) {
+                break;
+            }
+        }
+        
         return answer;
     }
 }
