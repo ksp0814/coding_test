@@ -1,62 +1,56 @@
-import java.util.*;
+import java.util.*; 
 
 class Solution {
-    int n, m;
-    boolean[][] visited;
-    int[][] land;
-    int[] dx = {1,-1,0,0};
-    int[] dy = {0,0,1,-1};
-    
     public int solution(int[][] land) {
-        this.n = land.length;
-        this.m = land[0].length;
-        this.land = land;
-        this.visited = new boolean[n][m];
-        
-        int[] oil = new int[m]; 
         int answer = 0;
         
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (land[i][j] == 1 && !visited[i][j]) {
-                    int size = 0;
-                    Set<Integer> cols = new HashSet<>();
+        int n = land.length;
+        int m = land[0].length;
+        
+        boolean[][] visited = new boolean[n][m];
+        int[] oil = new int[m];
+        
+        int[] dx = {1,-1,0,0};
+        int[] dy = {0,0,1,-1};
+        
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(land[i][j] == 1 && !visited[i][j]) {
+                    int cnt = 0;
+                    Set<Integer> col = new HashSet<>();
                     
-                    Stack<int[]> stack = new Stack<>();
-                    stack.push(new int[]{i, j});
+                    
+                    Queue<int[]> que = new LinkedList<>();
+                    que.add(new int[]{i,j});
                     visited[i][j] = true;
                     
-                    while (!stack.isEmpty()) {
-                        int[] cur = stack.pop();
-                        int x = cur[0], y = cur[1];
+                    while(!que.isEmpty()) {
+                        int[] cur = que.poll();
+                        cnt++;
+                        col.add(cur[1]);
                         
-                        size++;
-                        cols.add(y);
-                        
-                        for (int k = 0; k < 4; k++) {
-                            int nx = x + dx[k];
-                            int ny = y + dy[k];
-                            
-                            if (nx >= 0 && nx < n && ny >= 0 && ny < m) {
-                                if (land[nx][ny] == 1 && !visited[nx][ny]) {
-                                    visited[nx][ny] = true;
-                                    stack.push(new int[]{nx, ny});
+                        for(int k =0; k < 4; k++) {
+                            int x = cur[0] + dx[k];
+                            int y = cur[1] + dy[k];
+                            if(x>=0 && x < n && y >= 0 && y < m) {
+                                if(land[x][y] == 1 && !visited[x][y]) {
+                                    visited[x][y] = true;
+                                    que.add(new int[]{x,y});
                                 }
                             }
                         }
                     }
                     
-                    for (int c : cols) {
-                        oil[c] += size;
+                    for(int c : col) {
+                        oil[c] += cnt;
                     }
                 }
             }
         }
         
-        for (int num : oil) {
-            answer = Math.max(answer, num);
+        for(int i : oil) {
+            answer = Math.max(answer,i);
         }
-        
         return answer;
     }
 }
